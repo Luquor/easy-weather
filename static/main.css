@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -11,19 +12,23 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: linear-gradient(#6D51A5, #E4A7C5) 90%;
+    background: linear-gradient(#698cbf, #9bb2e5);
 }
 
 .location, .temperature {
-    height: 30vh;
-    width: 50%;
+    height: 17vh;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+
 }
 
-.temperature {
+.location {
+    height: 37vh;
+    display: flex;
     flex-direction: column;
+    justify-content: space-around;
 }
 
 .degree-section {
@@ -37,6 +42,16 @@ body {
     font-size: 30px;
 }
 
-.degree-section h2 {
-    font-size: 40px;
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
 }
