@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <link rel="stylesheet" href="./static/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easily-Weather | Online weather with Dark Sky API</title>
@@ -13,11 +17,18 @@
     </div>
 
     <div class="temperature">
-        <h2 class="degree">21</h2>
-        <span>°</span>
+        <div class="degree-section">
+            <h2 class="degree"></h2>
+            <span>°</span>
+        </div>
+
     </div>
     
-    <a href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
+    <footer class="footer">
+        <div class="footer-link">
+            <a class="link" href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
+        </div>
+    </footer>
 
     <script src="./static/skycons.js"></script>
     <script src="./static/app.js"></script>
