@@ -1,63 +1,63 @@
-window.addEventListener("load", ()=> {
+const notificationElement = document.querySelector(".notification");
+const iconElement = document.querySelector(".weather-icon");
+const tempElement = document.querySelector(".temperature-value p");
+const descElement = document.querySelector(".temperature-description p");
+const locationElement = document.querySelector(".location p");
 
-    let lat;
-    let lon;
-    let degree = document.querySelector('.degree');
-    let wind = document.querySelector('.wind');
-    let uv = document.querySelector('.uv')
-    let timezone = document.querySelector('.timezone');
-    let temperatureSection = document.querySelector('.temperature');
+const weather = {}
+weather.temperature = {
+    unit : "celsius"
+}
 
-    const temperatureSpan = document.querySelector('.degree-section span');
 
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(position => {
-    
-            lat = position.coords.latitude;
-            lon = position.coords.longitude;
-            const proxy = "https://cors-anywhere.herokuapp.com/";
-            const api = `${proxy}https://api.darksky.net/forecast/edbea218432ac27de1b3da161f4c60eb/${lat},${lon}`;
+const KELVIN = 273;
+const key = "826c4e5a6183c5cee981314435ca1713";
 
-                        
-            fetch(api)
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
 
-                    const {temperature, windSpeed, uvIndex, icon} = data.currently;
-                    degree.textContent = temperature;
-                    timezone.textContent = data.timezone;
-                    wind.textContent = windSpeed;
-                    uv.textContent = uvIndex
+if("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(setPosition, showError);
+} else {
+    notificationElement.style.display = "block";
+    notificationElement.innerHTML = "<p>Votre navigateur ne supporte pas la géolocalisation.</p>"
+}
 
-                    let celsius = (temperature - 32) * (5 / 9);
-                    let fahrenheit = temperature
+function setPosition(position) {
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
 
-                    setIcons(icon, document.querySelector('.icon'));
+    getWeather(latitude, longitude);
+}
 
-                    temperatureSection.addEventListener("click", ()=> {
-                        if (temperatureSpan.textContent === "F") {
-                            temperatureSpan.textContent = "C";
-                            degree.textContent = Math.floor(celsius);
-                        } else {
-                            if (temperatureSpan.textContent === "C") {
-                                temperatureSpan.textContent = "F";
-                                degree.textContent = temperature;
-                            }
-                        }
-                        
-                    });
-                });
-        });
-    }
+function showError(error) {
+    notificationElement.style.display = "block";
+    notificationElement.innerHTML = "<p> ${error.message} </p>"
+} 
 
-    function setIcons(icon, iconID) {
-        const skycons = new Skycons({color : "white"});
-        const currentIcon = icon.replace(/-/g, "_").toUpperCase();
-        skycons.play();
-        return skycons.set(iconID, Skycons[currentIcon]);
-    }
 
-});
+function getWeather(latitude, longitude) {
+    let api = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}`;
+
+    fetch(api)
+        .then(function(response) {
+            let data = response.json();
+            return data;
+        })
+        .then(function(data) {
+            weather.temperature.value = Math.floor(data.main.temp - KELVIN);
+            weather.description = data.weather[0].description;
+            weather.iconId = data.weather[0].icon;
+            weather.city = data.name;
+            weather.country = data.sys.country;
+        })
+        .then(function() {
+            displayWeather();
+        })
+}
+
+
+function displayWeather() {
+    iconElement.innerHTML = `<img src="img/icons/${weather.iconId}.png"/>`;
+    tempElement.innerHTML = `${weather.temperature.value} ° <span>C</span>`;
+    descElement.innerHTML = weather.description;
+    locationElement.innerHTML = `${weather.city}, ${weather.country}`;
+}
