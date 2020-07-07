@@ -3,6 +3,8 @@ window.addEventListener("load", ()=> {
     let lat;
     let lon;
     let degree = document.querySelector('.degree');
+    let wind = document.querySelector('.wind');
+    let uv = document.querySelector('.uv')
     let timezone = document.querySelector('.timezone');
     let temperatureSection = document.querySelector('.temperature');
 
@@ -14,7 +16,7 @@ window.addEventListener("load", ()=> {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
             const proxy = "https://cors-anywhere.herokuapp.com/";
-            // const api = `${proxy}https://api.darksky.net/forecast/edbea218432ac27de1b3da161f4c60eb/${lat},${lon}`;
+            const api = `${proxy}https://api.darksky.net/forecast/edbea218432ac27de1b3da161f4c60eb/${lat},${lon}`;
 
                         
             fetch(api)
@@ -24,9 +26,11 @@ window.addEventListener("load", ()=> {
                 .then(data => {
                     console.log(data);
 
-                    const {temperature, icon} = data.currently;
+                    const {temperature, windSpeed, uvIndex, icon} = data.currently;
                     degree.textContent = temperature;
                     timezone.textContent = data.timezone;
+                    wind.textContent = windSpeed;
+                    uv.textContent = uvIndex
 
                     let celsius = (temperature - 32) * (5 / 9);
                     let fahrenheit = temperature
