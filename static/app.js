@@ -11,7 +11,7 @@ weather.temperature = {
 
 
 const KELVIN = 273;
-const key = "";
+const key = "";     // Put your API KEY here (between the quotes)
 
 
 if("geolocation" in navigator) {
